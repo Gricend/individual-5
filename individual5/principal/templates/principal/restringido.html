@@ -1,19 +1,19 @@
-{% extends 'base.html'%}
-{%load static%}
+{% extends 'principal/base.html'%}
+{% load static %}
 
-{%block title%}
+{% block title %}
 
 <title>Pagina Restringida</title>
 
 {% if user.is_authenticated %}
-    <p> Bienvenido {{ user.first_name }} {{ user.last_name }}</p>
+    <h2> Bienvenido {{ user.first_name }} {{ user.last_name }}</h2>
 {% else %}
     {{titulo}}
 {% endif %}
 
 {% endblock %}
 
-{% block content %}
+{% block contenido %}
 <h1>Bienvenido a su página privada</h1>
 
 {% endblock %}

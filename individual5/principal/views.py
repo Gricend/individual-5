@@ -11,14 +11,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 # Create your views here.
 
 def landing(request):
-    return render(request, 'landing.html')
+    return render(request, 'principal/landing.html')
 
 def lista_usuario(request) -> HttpResponse:
     users = User.objects.all()
-    return render(request, 'usuarios.html', {'users': users})
+    return render(request, 'principal/usuarios.html', {'users': users})
 
 class ContactoView(TemplateView):
-    template_name = 'contacto.html'
+    template_name = 'principal/contacto.html'
     
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -58,7 +58,7 @@ class ContactoView(TemplateView):
 
 
 class Login(TemplateView):
-    template_name = 'login.html'
+    template_name = 'principal/login.html'
 
     def get(self, request, *args, **kwargs):
         form = LoginForm()
@@ -80,8 +80,8 @@ class Login(TemplateView):
             return render(request, self.template_name, { "form": form })
 
 class PermisoUsuarios(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
-    template_name = 'usuarios.html'
-    permission_required = 'individual.puede_ver_usuarios'
+    template_name = 'principal/usuarios.html'
+    permission_required = 'principal.puede_ver_usuarios'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -96,8 +96,8 @@ class PermisoUsuarios(PermissionRequiredMixin, LoginRequiredMixin, TemplateView)
         return super().get(request, *args, **kwargs)
 
 class PagRestringida(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
-    template_name = 'restringido.html'
-    permission_required = 'individual.puede_ver_pagina'
+    template_name = 'principal/restringido.html'
+    permission_required = 'principal.puede_ver_pagina'
     def get(self, request, *args, **kwargs):
         titulo = "Restringido"
         contexto = {
