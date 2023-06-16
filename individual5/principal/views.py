@@ -58,7 +58,7 @@ class ContactoView(TemplateView):
 
 
 class Login(TemplateView):
-    template_name = 'registration/login.html'
+    template_name = 'login.html'
 
     def get(self, request, *args, **kwargs):
         form = LoginForm()
@@ -79,7 +79,7 @@ class Login(TemplateView):
         else:
             return render(request, self.template_name, { "form": form })
 
-class UsuariosRestringidaView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+class PermisoUsuarios(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     template_name = 'usuarios.html'
     permission_required = 'individual.puede_ver_usuarios'
 
@@ -94,3 +94,15 @@ class UsuariosRestringidaView(PermissionRequiredMixin, LoginRequiredMixin, Templ
         if titulo is None:
             return redirect('landing')
         return super().get(request, *args, **kwargs)
+
+class PagRestringida(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+    template_name = 'restringido.html'
+    permission_required = 'individual.puede_ver_pagina'
+    def get(self, request, *args, **kwargs):
+        titulo = "Restringido"
+        contexto = {
+        'titulo': titulo,
+        }
+        if titulo is None:
+            return redirect('landing')
+        return render(request, self.template_name, contexto)

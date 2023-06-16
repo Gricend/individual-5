@@ -33,7 +33,7 @@ class FormularioContactoForm(forms.Form):
                                 'min_length': 'El email debe tener al menos 9 caracteres'
                                 },
                                 widget=forms.TextInput(attrs={
-                                'placeholder': 'No olvide tus número de teléfono',
+                                'placeholder': 'Déjanos tu número para contactarte',
                                 'class': 'form-control'
                                 })
                                 )
@@ -52,11 +52,11 @@ class FormularioContactoForm(forms.Form):
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Usuario', required=True,
-                            max_length=50, min_length=5,
+                            max_length=50, min_length=1,
                             error_messages={
                                 'required': 'El usuario es obligatorio',
                                 'max_length': 'El usuario no puede superar los 50 caracteres',
-                                'min_length': 'El usuario debe tener al menos 5 caracteres'
+                                'min_length': 'El usuario debe tener al menos 1 caracter'
                             },
                             widget=forms.TextInput(attrs={
                                 'placeholder': 'Ingrese su usuario',

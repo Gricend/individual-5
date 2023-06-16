@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from principal.views import ContactoView, landing, lista_usuario, Login, AreaRestringidaView
+from principal.views import ContactoView, landing, lista_usuario, Login, PagRestringida
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -27,5 +27,5 @@ urlpatterns = [
     path('usuarios/', lista_usuario, name='usuarios'),
     path('login/', Login.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('restringido/', AreaRestringidaView.as_view(), name='Restringido')
+    path('restringido/', PagRestringida.as_view(), name='restringido')
 ]
