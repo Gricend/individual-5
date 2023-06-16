@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
-from principal.forms import FormularioContactoForm
+from principal.forms import FormularioContactoForm, LoginForm
 from principal.models import FormularioContacto
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 # Create your views here.
 
@@ -53,3 +55,42 @@ class ContactoView(TemplateView):
         else:
             mensajes = { "enviado": False, "resultado": form.errors }
         return render(request, self.template_name, { "formulario": form, "mensajes": mensajes})
+
+
+class Login(TemplateView):
+    template_name = 'registration/login.html'
+
+    def get(self, request, *args, **kwargs):
+        form = LoginForm()
+        return render(request, self.template_name, { "form": form })
+
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('landing')
+            form.add_error('username', 'Credenciales incorrectas')
+            return render(request, self.template_name, { "form": form })
+        else:
+            return render(request, self.template_name, { "form": form })
+
+class UsuariosRestringidaView(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
+    template_name = 'usuarios.html'
+    permission_required = 'individual.puede_ver_usuarios'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = User.objects.exclude(is_superuser=True)
+        context['users'] = users
+        return context
+
+    def get(self, request, *args, **kwargs):
+        titulo = "Restringido"
+        if titulo is None:
+            return redirect('landing')
+        return super().get(request, *args, **kwargs)
