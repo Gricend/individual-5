@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from principal.views import ContactoView, landing, lista_usuario
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', landing, name='landing'),
+    path('contacto/', ContactoView.as_view(), name='contacto'),
+    path('usuarios/', lista_usuario, name='usuarios'),
 ]
